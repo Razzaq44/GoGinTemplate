@@ -67,7 +67,19 @@ cp .env.example .env
 go run cmd/api/main.go
 ```
 
-The API will be available at `http://localhost:8080`
+5. Access the API documentation:
+```
+http://localhost:8080/swagger/index.html
+```
+
+6. Generate Swagger documentation:
+```bash
+go run github.com/swaggo/swag/cmd/swag@latest init -g cmd/api/main.go -o docs --parseDependency --parseInternal
+```
+
+7. Access points:
+   - API endpoint: `http://localhost:8080`
+   - API documentation: `http://localhost:8080/swagger/index.html`
 
 ## Environment Variables
 
