@@ -114,6 +114,16 @@ To use the generator, run:
 ```bash
 go run cmd/generator/main.go
 ```
+This command will prompt you to select the module type (e.g., `controller`, `service`, `model`, `request`, `response`, `repository`) and provide the necessary names. The generated files will be placed in their respective subdirectories within `cmd/generator/`.
+
+For example, if you generate a `Car` module, the following files might be created:
+- `cmd/generator/controller/car_generator.go`
+- `cmd/generator/service/car_generator.go`
+- `cmd/generator/repository/car_generator.go`
+- `cmd/generator/model/car_generator.go`
+- `cmd/generator/request/car_generator.go`
+- `cmd/generator/response/car_generator.go`
+
 Follow the prompts to select the module type and provide the necessary names.
 
 ### Adding New Endpoints
