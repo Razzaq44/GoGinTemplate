@@ -598,12 +598,12 @@ info:
     email: support@swagger.io
     name: API Support
     url: http://www.swagger.io/support
-  description: A RESTful API for car rental management system
+  description: A RESTful API management system
   license:
     name: MIT
     url: https://opensource.org/licenses/MIT
   termsOfService: http://swagger.io/terms/
-  title: RentCar API
+  title: RESTful API GO
   version: "1.0"
 paths:
   /cars:
