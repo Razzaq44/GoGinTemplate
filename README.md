@@ -1,6 +1,6 @@
-# API-RentCar
+# Go RESTfulAPI Management
 
-A RESTful API for car rental management built with Go, Gin, and GORM.
+A RESTful API management built with Go, Gin, and GORM.
 
 ## Features
 
