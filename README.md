@@ -81,29 +81,10 @@ go run github.com/swaggo/swag/cmd/swag@latest init -g cmd/api/main.go -o docs --
    - API endpoint: `http://localhost:8080`
    - API documentation: `http://localhost:8080/swagger/index.html`
 
-## Environment Variables
-
-| Variable | Description | Default |
-|----------|-------------|---------|
-| `PORT` | Server port | `8080` |
-| `GIN_MODE` | Gin mode (debug/release) | `debug` |
-| `DB_TYPE` | Database type | `sqlite` |
-| `DB_PATH` | Database file path | `./rentcar.db` |
-| `API_VERSION` | API version | `v1` |
-| `API_TITLE` | API title | `RentCar API` |
-| `API_DESCRIPTION` | API description | `Car Rental Management API` |
-
 ## API Endpoints
 
 ### Health Check
 - `GET /health` - Health check endpoint
-
-### Products
-- `GET /api/v1/products` - Get all products (with pagination)
-- `GET /api/v1/products/:id` - Get product by ID
-- `POST /api/v1/products` - Create new product
-- `PUT /api/v1/products/:id` - Update product
-- `DELETE /api/v1/products/:id` - Delete product
 
 ### Documentation
 - `GET /swagger/*` - Swagger UI documentation
@@ -112,46 +93,6 @@ go run github.com/swaggo/swag/cmd/swag@latest init -g cmd/api/main.go -o docs --
 
 Once the server is running, you can access the interactive API documentation at:
 `http://localhost:8080/swagger/index.html`
-
-## Request/Response Examples
-
-### Create Product
-```bash
-curl -X POST http://localhost:8080/api/v1/products \
-  -H "Content-Type: application/json" \
-  -d '{
-    "name": "Toyota Camry",
-    "description": "Reliable sedan for city driving",
-    "price_per_day": 45.99,
-    "category": "Sedan",
-    "available": true
-  }'
-```
-
-### Get All Products
-```bash
-curl http://localhost:8080/api/v1/products?page=1&limit=10
-```
-
-### Get Product by ID
-```bash
-curl http://localhost:8080/api/v1/products/1
-```
-
-### Update Product
-```bash
-curl -X PUT http://localhost:8080/api/v1/products/1 \
-  -H "Content-Type: application/json" \
-  -d '{
-    "name": "Toyota Camry 2024",
-    "price_per_day": 49.99
-  }'
-```
-
-### Delete Product
-```bash
-curl -X DELETE http://localhost:8080/api/v1/products/1
-```
 
 ## Testing
 
@@ -166,6 +107,14 @@ go test -cover ./tests/...
 ```
 
 ## Development
+
+### Code Generation
+This project includes a code generator to scaffold new modules (controllers, services, repositories, models, requests, responses).
+To use the generator, run:
+```bash
+go run cmd/generator/main.go
+```
+Follow the prompts to select the module type and provide the necessary names.
 
 ### Adding New Endpoints
 
