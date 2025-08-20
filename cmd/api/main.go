@@ -18,9 +18,9 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// @title RentCar API
+// @title RESTful API GO
 // @version 1.0
-// @description A RESTful API for car rental management system
+// @description A RESTful API management system
 // @termsOfService http://swagger.io/terms/
 
 // @contact.name API Support
