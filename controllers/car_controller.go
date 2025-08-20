@@ -41,13 +41,16 @@ func (c *CarController) CreateCar(ctx *gin.Context) {
 		return
 	}
 
-	car, err := c.carService.CreateCar(&req)
+	_, err := c.carService.CreateCar(&req)
 	if err != nil {
 		utils.SendErrorResponse(ctx, http.StatusInternalServerError, "Failed to create car", err)
 		return
 	}
 
-	response := responses.ToCarResponse(car)
+	response := utils.SuccessResponse{
+		Success: true,
+		Message: "Car created successfully",
+	}
 	ctx.JSON(http.StatusCreated, response)
 }
 
@@ -148,7 +151,7 @@ func (c *CarController) UpdateCar(ctx *gin.Context) {
 		return
 	}
 
-	car, err := c.carService.UpdateCar(uint(id), &req)
+	_, err = c.carService.UpdateCar(uint(id), &req)
 	if err != nil {
 		if err.Error() == "car not found" {
 			utils.SendErrorResponse(ctx, http.StatusNotFound, "Car not found", err)
@@ -158,7 +161,10 @@ func (c *CarController) UpdateCar(ctx *gin.Context) {
 		return
 	}
 
-	response := responses.ToCarResponse(car)
+	response := utils.SuccessResponse{
+		Success: true,
+		Message: "Car updated successfully",
+	}
 	ctx.JSON(http.StatusOK, response)
 }
 
@@ -192,5 +198,9 @@ func (c *CarController) DeleteCar(ctx *gin.Context) {
 		return
 	}
 
-	utils.SendSuccessResponse(ctx, http.StatusOK, "Car deleted successfully", nil)
+	response := utils.SuccessResponse{
+		Success: true,
+		Message: "Car deleted successfully",
+	}
+	ctx.JSON(http.StatusOK, response)
 }

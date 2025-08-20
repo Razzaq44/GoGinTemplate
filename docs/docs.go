@@ -63,7 +63,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/utils.SuccessResponse"
+                            "$ref": "#/definitions/responses.CarsListResponse"
                         }
                     },
                     "500": {
@@ -145,7 +145,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/utils.SuccessResponse"
+                            "$ref": "#/definitions/responses.CarResponse"
                         }
                     },
                     "400": {
@@ -301,34 +301,13 @@ const docTemplate = `{
                         "description": "Items per page",
                         "name": "limit",
                         "in": "query"
-                    },
-                    {
-                        "type": "boolean",
-                        "description": "Filter by availability",
-                        "name": "available",
-                        "in": "query"
                     }
                 ],
                 "responses": {
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/utils.PaginatedResponse"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "type": "array",
-                                            "items": {
-                                                "$ref": "#/definitions/models.Product"
-                                            }
-                                        }
-                                    }
-                                }
-                            ]
+                            "$ref": "#/definitions/utils.SuccessResponse"
                         }
                     },
                     "500": {
@@ -358,7 +337,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models.CreateProductRequest"
+                            "$ref": "#/definitions/requests.CreateProductRequest"
                         }
                     }
                 ],
@@ -459,7 +438,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models.UpdateProductRequest"
+                            "$ref": "#/definitions/requests.UpdateProductRequest"
                         }
                     }
                 ],
@@ -467,19 +446,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/utils.SuccessResponse"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#/definitions/models.Product"
-                                        }
-                                    }
-                                }
-                            ]
+                            "$ref": "#/definitions/utils.SuccessResponse"
                         }
                     },
                     "400": {
@@ -553,172 +520,135 @@ const docTemplate = `{
         }
     },
     "definitions": {
-        "models.CreateProductRequest": {
-            "description": "Request payload for creating a new car rental product",
-            "type": "object",
-            "required": [
-                "brand",
-                "model",
-                "name",
-                "price_per_day",
-                "year"
+        "models.Brand": {
+            "type": "string",
+            "enum": [
+                "Toyota",
+                "Honda",
+                "Mercedes",
+                "Wuling",
+                "Mitsubishi",
+                "Volkswagen",
+                "Jeep",
+                "Subaru",
+                "Hyundai",
+                "Kia",
+                "Renault",
+                "Volvo",
+                "Chevrolet",
+                "Ford",
+                "BMW"
             ],
-            "properties": {
-                "available": {
-                    "type": "boolean",
-                    "example": true
-                },
-                "brand": {
-                    "type": "string",
-                    "maxLength": 50,
-                    "minLength": 2,
-                    "example": "Toyota"
-                },
-                "description": {
-                    "type": "string",
-                    "maxLength": 500,
-                    "example": "Comfortable sedan with excellent fuel economy"
-                },
-                "model": {
-                    "type": "string",
-                    "maxLength": 50,
-                    "minLength": 2,
-                    "example": "Camry"
-                },
-                "name": {
-                    "type": "string",
-                    "maxLength": 100,
-                    "minLength": 2,
-                    "example": "Toyota Camry 2023"
-                },
-                "price_per_day": {
-                    "type": "number",
-                    "minimum": 0,
-                    "example": 45.99
-                },
-                "year": {
-                    "type": "integer",
-                    "maximum": 2030,
-                    "minimum": 1900,
-                    "example": 2023
-                }
-            }
+            "x-enum-varnames": [
+                "Toyota",
+                "Honda",
+                "Mercedes",
+                "Wuling",
+                "Mitsubishi",
+                "Volkswagen",
+                "Jeep",
+                "Subaru",
+                "Hyundai",
+                "Kia",
+                "Renault",
+                "Volvo",
+                "Chevrolet",
+                "Ford",
+                "BMW"
+            ]
         },
-        "models.Product": {
-            "description": "Car rental product information",
-            "type": "object",
-            "required": [
-                "brand",
-                "model",
-                "name",
-                "price_per_day",
-                "year"
+        "models.CarCategory": {
+            "type": "string",
+            "enum": [
+                "City Car",
+                "LCGC",
+                "Compact",
+                "MPV",
+                "SUV",
+                "Crossover"
             ],
-            "properties": {
-                "available": {
-                    "type": "boolean",
-                    "example": true
-                },
-                "brand": {
-                    "type": "string",
-                    "maxLength": 50,
-                    "minLength": 2,
-                    "example": "Toyota"
-                },
-                "created_at": {
-                    "type": "string",
-                    "example": "2023-01-01T00:00:00Z"
-                },
-                "description": {
-                    "type": "string",
-                    "maxLength": 500,
-                    "example": "Comfortable sedan with excellent fuel economy"
-                },
-                "id": {
-                    "type": "integer",
-                    "example": 1
-                },
-                "model": {
-                    "type": "string",
-                    "maxLength": 50,
-                    "minLength": 2,
-                    "example": "Camry"
-                },
-                "name": {
-                    "type": "string",
-                    "maxLength": 100,
-                    "minLength": 2,
-                    "example": "Toyota Camry 2023"
-                },
-                "price_per_day": {
-                    "type": "number",
-                    "minimum": 0,
-                    "example": 45.99
-                },
-                "updated_at": {
-                    "type": "string",
-                    "example": "2023-01-01T00:00:00Z"
-                },
-                "year": {
-                    "type": "integer",
-                    "maximum": 2030,
-                    "minimum": 1900,
-                    "example": 2023
-                }
-            }
+            "x-enum-varnames": [
+                "CityCar",
+                "LCGC",
+                "Compact",
+                "MPV",
+                "SUV",
+                "Crossover"
+            ]
         },
-        "models.UpdateProductRequest": {
-            "description": "Request payload for updating an existing car rental product",
-            "type": "object",
-            "properties": {
-                "available": {
-                    "type": "boolean",
-                    "example": true
-                },
-                "brand": {
-                    "type": "string",
-                    "maxLength": 50,
-                    "minLength": 2,
-                    "example": "Toyota"
-                },
-                "description": {
-                    "type": "string",
-                    "maxLength": 500,
-                    "example": "Comfortable sedan with excellent fuel economy"
-                },
-                "model": {
-                    "type": "string",
-                    "maxLength": 50,
-                    "minLength": 2,
-                    "example": "Camry"
-                },
-                "name": {
-                    "type": "string",
-                    "maxLength": 100,
-                    "minLength": 2,
-                    "example": "Toyota Camry 2023"
-                },
-                "price_per_day": {
-                    "type": "number",
-                    "minimum": 0,
-                    "example": 45.99
-                },
-                "year": {
-                    "type": "integer",
-                    "maximum": 2030,
-                    "minimum": 1900,
-                    "example": 2023
-                }
-            }
+        "models.TransmissionType": {
+            "type": "string",
+            "enum": [
+                "Automatic",
+                "Manual"
+            ],
+            "x-enum-varnames": [
+                "Automatic",
+                "Manual"
+            ]
         },
         "requests.CreateCarRequest": {
             "description": "Request payload for creating a new car",
             "type": "object",
             "required": [
+                "brand",
+                "category",
                 "description",
-                "name"
+                "is_available",
+                "license_plate",
+                "machine_number",
+                "model",
+                "name",
+                "price_per_day",
+                "price_per_month",
+                "price_per_week",
+                "transmission",
+                "year"
             ],
             "properties": {
+                "brand": {
+                    "description": "Brand of the car\n@Description Brand of the car\n@Example \"Toyota\"",
+                    "enum": [
+                        "Toyota",
+                        "Honda",
+                        "Mercedes",
+                        "Wuling",
+                        "Mitsubishi",
+                        "Volkswagen",
+                        "Jeep",
+                        "Subaru",
+                        "Hyundai",
+                        "Kia",
+                        "Renault",
+                        "Volvo",
+                        "Chevrolet",
+                        "Ford",
+                        "BMW"
+                    ],
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/models.Brand"
+                        }
+                    ],
+                    "example": "Toyota"
+                },
+                "category": {
+                    "description": "Category of the car\n@Description Category of the car\n@Example \"SUV\"",
+                    "enum": [
+                        "CityCar",
+                        "LCGC",
+                        "Compact",
+                        "MPV",
+                        "SUV",
+                        "Crossover"
+                    ],
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/models.CarCategory"
+                        }
+                    ],
+                    "example": "SUV"
+                },
                 "description": {
                     "description": "Description of the car\n@Description Description of the car\n@Example \"This is a sample car description\"",
                     "type": "string",
@@ -726,12 +656,95 @@ const docTemplate = `{
                     "minLength": 10,
                     "example": "This is a sample car description"
                 },
+                "is_available": {
+                    "description": "Availability status of the car\n@Description Availability status of the car\n@Example true",
+                    "type": "boolean",
+                    "example": true
+                },
+                "license_plate": {
+                    "description": "License plate of the car\n@Description License plate of the car\n@Example \"ABC123\"",
+                    "type": "string",
+                    "maxLength": 10,
+                    "minLength": 3,
+                    "example": "ABC123"
+                },
+                "machine_number": {
+                    "description": "Machine number of the car\n@Description Machine number of the car\n@Example \"123456\"",
+                    "type": "string",
+                    "maxLength": 10,
+                    "minLength": 3,
+                    "example": "123456"
+                },
+                "model": {
+                    "description": "Model of the car\n@Description Model of the car\n@Example \"Sample Model\"",
+                    "type": "string",
+                    "maxLength": 100,
+                    "minLength": 3,
+                    "example": "Sample Model"
+                },
                 "name": {
                     "description": "Name of the car\n@Description Name of the car\n@Example \"Sample Car\"",
                     "type": "string",
                     "maxLength": 100,
                     "minLength": 3,
                     "example": "Sample Car"
+                },
+                "price_per_day": {
+                    "description": "Price Per Day of the car\n@Description Price Per Day of the car\n@Example 10000",
+                    "type": "number",
+                    "example": 10000
+                },
+                "price_per_month": {
+                    "description": "Price Per Month of the car\n@Description Price Per Month of the car\n@Example 40000",
+                    "type": "number",
+                    "example": 40000
+                },
+                "price_per_week": {
+                    "description": "Price Per Week of the car\n@Description Price Per Week of the car\n@Example 7000",
+                    "type": "number",
+                    "example": 7000
+                },
+                "transmission": {
+                    "description": "Transmission type of the car\n@Description Transmission type of the car\n@Example \"Automatic\"",
+                    "enum": [
+                        "Automatic",
+                        "Manual"
+                    ],
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/models.TransmissionType"
+                        }
+                    ],
+                    "example": "Automatic"
+                },
+                "year": {
+                    "description": "Year of the car\n@Description Year of the car\n@Example 2023",
+                    "type": "integer",
+                    "example": 2023
+                }
+            }
+        },
+        "requests.CreateProductRequest": {
+            "description": "Request payload for creating a new product",
+            "type": "object",
+            "required": [
+                "description",
+                "name"
+            ],
+            "properties": {
+                "description": {
+                    "description": "Description of the product\n@Description Description of the product\n@Example \"This is a sample product description\"",
+                    "type": "string",
+                    "maxLength": 500,
+                    "minLength": 10,
+                    "example": "This is a sample product description"
+                },
+                "name": {
+                    "description": "Name of the product\n@Description Name of the product\n@Example \"Sample Product\"",
+                    "type": "string",
+                    "maxLength": 100,
+                    "minLength": 3,
+                    "example": "Sample Product"
                 }
             }
         },
@@ -739,6 +752,49 @@ const docTemplate = `{
             "description": "Request payload for updating a car",
             "type": "object",
             "properties": {
+                "brand": {
+                    "description": "Brand of the car\n@Description Brand of the car\n@Example \"Toyota\"",
+                    "enum": [
+                        "Toyota",
+                        "Honda",
+                        "Mercedes",
+                        "Wuling",
+                        "Mitsubishi",
+                        "Volkswagen",
+                        "Jeep",
+                        "Subaru",
+                        "Hyundai",
+                        "Kia",
+                        "Renault",
+                        "Volvo",
+                        "Chevrolet",
+                        "Ford",
+                        "BMW"
+                    ],
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/models.Brand"
+                        }
+                    ],
+                    "example": "Toyota"
+                },
+                "category": {
+                    "description": "Category of the car\n@Description Category of the car\n@Example \"SUV\"",
+                    "enum": [
+                        "CityCar",
+                        "LCGC",
+                        "Compact",
+                        "MPV",
+                        "SUV",
+                        "Crossover"
+                    ],
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/models.CarCategory"
+                        }
+                    ],
+                    "example": "SUV"
+                },
                 "description": {
                     "description": "Description of the car\n@Description Description of the car\n@Example \"This is an updated car description\"",
                     "type": "string",
@@ -746,12 +802,210 @@ const docTemplate = `{
                     "minLength": 10,
                     "example": "This is an updated car description"
                 },
+                "is_available": {
+                    "description": "Availability status of the car\n@Description Availability status of the car\n@Example true",
+                    "type": "boolean",
+                    "example": true
+                },
+                "license_plate": {
+                    "description": "License plate of the car\n@Description License plate of the car\n@Example \"ABC123\"",
+                    "type": "string",
+                    "maxLength": 10,
+                    "minLength": 3,
+                    "example": "ABC123"
+                },
+                "machine_number": {
+                    "description": "Machine number of the car\n@Description Machine number of the car\n@Example \"123456\"",
+                    "type": "string",
+                    "maxLength": 10,
+                    "minLength": 3,
+                    "example": "123456"
+                },
+                "model": {
+                    "description": "Model of the car\n@Description Model of the car\n@Example \"Sample Model\"",
+                    "type": "string",
+                    "maxLength": 100,
+                    "minLength": 3,
+                    "example": "Sample Model"
+                },
                 "name": {
                     "description": "Name of the car\n@Description Name of the car\n@Example \"Updated Car\"",
                     "type": "string",
                     "maxLength": 100,
                     "minLength": 3,
                     "example": "Updated Car"
+                },
+                "price_per_day": {
+                    "description": "Price Per Day of the car\n@Description Price Per Day of the car\n@Example 10000",
+                    "type": "number",
+                    "example": 10000
+                },
+                "price_per_month": {
+                    "description": "Price Per Month of the car\n@Description Price Per Month of the car\n@Example 40000",
+                    "type": "number",
+                    "example": 40000
+                },
+                "price_per_week": {
+                    "description": "Price Per Week of the car\n@Description Price Per Week of the car\n@Example 7000",
+                    "type": "number",
+                    "example": 7000
+                },
+                "transmission": {
+                    "description": "Transmission type of the car\n@Description Transmission type of the car\n@Example \"Automatic\"",
+                    "enum": [
+                        "Automatic",
+                        "Manual"
+                    ],
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/models.TransmissionType"
+                        }
+                    ],
+                    "example": "Automatic"
+                },
+                "year": {
+                    "description": "Year of the car\n@Description Year of the car\n@Example 2023",
+                    "type": "integer",
+                    "example": 2023
+                }
+            }
+        },
+        "requests.UpdateProductRequest": {
+            "description": "Request payload for updating a product",
+            "type": "object",
+            "properties": {
+                "description": {
+                    "description": "Description of the product\n@Description Description of the product\n@Example \"This is an updated product description\"",
+                    "type": "string",
+                    "maxLength": 500,
+                    "minLength": 10,
+                    "example": "This is an updated product description"
+                },
+                "name": {
+                    "description": "Name of the product\n@Description Name of the product\n@Example \"Updated Product\"",
+                    "type": "string",
+                    "maxLength": 100,
+                    "minLength": 3,
+                    "example": "Updated Product"
+                }
+            }
+        },
+        "responses.CarResponse": {
+            "description": "Car response structure",
+            "type": "object",
+            "properties": {
+                "brand": {
+                    "description": "Brand of the car\n@Description Brand of the car\n@Example \"Toyota\"",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/models.Brand"
+                        }
+                    ],
+                    "example": "Toyota"
+                },
+                "category": {
+                    "description": "Category of the car\n@Description Category of the car\n@Example \"CityCar\"",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/models.CarCategory"
+                        }
+                    ],
+                    "example": "CityCar"
+                },
+                "created_at": {
+                    "description": "Creation timestamp\n@Description Creation timestamp\n@Example \"2023-01-01T00:00:00Z\"",
+                    "type": "string",
+                    "example": "2023-01-01T00:00:00Z"
+                },
+                "description": {
+                    "description": "Description of the car\n@Description Description of the car\n@Example \"Comfortable family car with spacious interior\"",
+                    "type": "string",
+                    "example": "Comfortable family car with spacious interior"
+                },
+                "id": {
+                    "description": "Primary key\n@Description Unique identifier\n@Example 1",
+                    "type": "integer",
+                    "example": 1
+                },
+                "is_available": {
+                    "description": "Availability status\n@Description Whether the car is available for rent\n@Example true",
+                    "type": "boolean",
+                    "example": true
+                },
+                "license_plate": {
+                    "description": "License plate\n@Description License plate number\n@Example \"B 1234 ABC\"",
+                    "type": "string",
+                    "example": "B 1234 ABC"
+                },
+                "machine_number": {
+                    "description": "Machine number\n@Description Machine/engine number\n@Example \"ABC123456789\"",
+                    "type": "string",
+                    "example": "ABC123456789"
+                },
+                "model": {
+                    "description": "Model of the car\n@Description Model of the car\n@Example \"Avanza\"",
+                    "type": "string",
+                    "example": "Avanza"
+                },
+                "name": {
+                    "description": "Name of the car\n@Description Name of the car\n@Example \"Toyota Avanza\"",
+                    "type": "string",
+                    "example": "Toyota Avanza"
+                },
+                "price_per_day": {
+                    "description": "Price per day\n@Description Price per day in IDR\n@Example 300000",
+                    "type": "number",
+                    "example": 300000
+                },
+                "price_per_month": {
+                    "description": "Price per month\n@Description Price per month in IDR\n@Example 7000000",
+                    "type": "number",
+                    "example": 7000000
+                },
+                "price_per_week": {
+                    "description": "Price per week\n@Description Price per week in IDR\n@Example 1800000",
+                    "type": "number",
+                    "example": 1800000
+                },
+                "transmission": {
+                    "description": "Transmission type\n@Description Transmission type\n@Example \"Automatic\"",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/models.TransmissionType"
+                        }
+                    ],
+                    "example": "Automatic"
+                },
+                "updated_at": {
+                    "description": "Last update timestamp\n@Description Last update timestamp\n@Example \"2023-01-01T00:00:00Z\"",
+                    "type": "string",
+                    "example": "2023-01-01T00:00:00Z"
+                },
+                "year": {
+                    "description": "Year of the car\n@Description Year of the car\n@Example 2022",
+                    "type": "integer",
+                    "example": 2022
+                }
+            }
+        },
+        "responses.CarsListResponse": {
+            "description": "Paginated list response for cars",
+            "type": "object",
+            "properties": {
+                "data": {
+                    "description": "List of cars\n@Description Array of car data",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/responses.CarResponse"
+                    }
+                },
+                "pagination": {
+                    "description": "Pagination metadata\n@Description Pagination information",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/utils.PaginationMeta"
+                        }
+                    ]
                 }
             }
         },
@@ -773,30 +1027,39 @@ const docTemplate = `{
                 }
             }
         },
-        "utils.PaginatedResponse": {
-            "description": "Paginated response format",
+        "utils.PaginationMeta": {
+            "description": "Pagination metadata structure",
             "type": "object",
             "properties": {
-                "data": {},
-                "limit": {
-                    "type": "integer",
-                    "example": 10
-                },
-                "message": {
-                    "type": "string",
-                    "example": "Data retrieved successfully"
-                },
-                "page": {
-                    "type": "integer",
-                    "example": 1
-                },
-                "success": {
+                "has_next": {
+                    "description": "Has next page\n@Description Whether there is a next page\n@Example true",
                     "type": "boolean",
                     "example": true
                 },
+                "has_prev": {
+                    "description": "Has previous page\n@Description Whether there is a previous page\n@Example false",
+                    "type": "boolean",
+                    "example": false
+                },
+                "limit": {
+                    "description": "Items per page\n@Description Number of items per page\n@Example 10",
+                    "type": "integer",
+                    "example": 10
+                },
+                "page": {
+                    "description": "Current page number\n@Description Current page number\n@Example 1",
+                    "type": "integer",
+                    "example": 1
+                },
                 "total": {
+                    "description": "Total number of items\n@Description Total number of items\n@Example 100",
                     "type": "integer",
                     "example": 100
+                },
+                "total_pages": {
+                    "description": "Total number of pages\n@Description Total number of pages\n@Example 10",
+                    "type": "integer",
+                    "example": 10
                 }
             }
         },
@@ -804,7 +1067,6 @@ const docTemplate = `{
             "description": "Success response format",
             "type": "object",
             "properties": {
-                "data": {},
                 "message": {
                     "type": "string",
                     "example": "Operation completed successfully"

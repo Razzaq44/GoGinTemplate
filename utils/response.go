@@ -19,7 +19,6 @@ type ErrorResponse struct {
 type SuccessResponse struct {
 	Success bool   `json:"success" example:"true"`
 	Message string `json:"message" example:"Operation completed successfully"`
-	Data    any    `json:"data,omitempty"`
 }
 
 // PaginationMeta represents pagination metadata
@@ -86,7 +85,6 @@ func SendSuccessResponse(c *gin.Context, statusCode int, message string, data in
 	response := SuccessResponse{
 		Success: true,
 		Message: message,
-		Data:    data,
 	}
 
 	c.JSON(statusCode, response)

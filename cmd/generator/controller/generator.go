@@ -60,7 +60,10 @@ func (c *{{.Name}}Controller) Create{{.Name}}(ctx *gin.Context) {
 		return
 	}
 
-	response := responses.To{{.Name}}Response({{.LowerName}})
+	response := utils.SuccessResponse{
+		Success: true,
+		Message: "{{.LowerName}} created successfully",
+	}
 	ctx.JSON(http.StatusCreated, response)
 }
 
@@ -159,7 +162,10 @@ func (c *{{.Name}}Controller) Update{{.Name}}(ctx *gin.Context) {
 		return
 	}
 
-	response := responses.To{{.Name}}Response({{.LowerName}})
+	response := utils.SuccessResponse{
+		Success: true,
+		Message: "{{.LowerName}} updated successfully",
+	}
 	ctx.JSON(http.StatusOK, response)
 }
 
@@ -193,7 +199,11 @@ func (c *{{.Name}}Controller) Delete{{.Name}}(ctx *gin.Context) {
 		return
 	}
 
-	utils.SendSuccessResponse(ctx, http.StatusOK, "{{.Name}} deleted successfully", nil)
+	response := utils.SuccessResponse{
+		Success: true,
+		Message: "{{.LowerName}} deleted successfully",
+	}
+	ctx.JSON(http.StatusOK, response)
 }
 `
 
