@@ -1,0 +1,581 @@
+basePath: /api/v1
+definitions:
+  models.CreateProductRequest:
+    description: Request payload for creating a new car rental product
+    properties:
+      available:
+        example: true
+        type: boolean
+      brand:
+        example: Toyota
+        maxLength: 50
+        minLength: 2
+        type: string
+      description:
+        example: Comfortable sedan with excellent fuel economy
+        maxLength: 500
+        type: string
+      model:
+        example: Camry
+        maxLength: 50
+        minLength: 2
+        type: string
+      name:
+        example: Toyota Camry 2023
+        maxLength: 100
+        minLength: 2
+        type: string
+      price_per_day:
+        example: 45.99
+        minimum: 0
+        type: number
+      year:
+        example: 2023
+        maximum: 2030
+        minimum: 1900
+        type: integer
+    required:
+    - brand
+    - model
+    - name
+    - price_per_day
+    - year
+    type: object
+  models.Product:
+    description: Car rental product information
+    properties:
+      available:
+        example: true
+        type: boolean
+      brand:
+        example: Toyota
+        maxLength: 50
+        minLength: 2
+        type: string
+      created_at:
+        example: "2023-01-01T00:00:00Z"
+        type: string
+      description:
+        example: Comfortable sedan with excellent fuel economy
+        maxLength: 500
+        type: string
+      id:
+        example: 1
+        type: integer
+      model:
+        example: Camry
+        maxLength: 50
+        minLength: 2
+        type: string
+      name:
+        example: Toyota Camry 2023
+        maxLength: 100
+        minLength: 2
+        type: string
+      price_per_day:
+        example: 45.99
+        minimum: 0
+        type: number
+      updated_at:
+        example: "2023-01-01T00:00:00Z"
+        type: string
+      year:
+        example: 2023
+        maximum: 2030
+        minimum: 1900
+        type: integer
+    required:
+    - brand
+    - model
+    - name
+    - price_per_day
+    - year
+    type: object
+  models.UpdateProductRequest:
+    description: Request payload for updating an existing car rental product
+    properties:
+      available:
+        example: true
+        type: boolean
+      brand:
+        example: Toyota
+        maxLength: 50
+        minLength: 2
+        type: string
+      description:
+        example: Comfortable sedan with excellent fuel economy
+        maxLength: 500
+        type: string
+      model:
+        example: Camry
+        maxLength: 50
+        minLength: 2
+        type: string
+      name:
+        example: Toyota Camry 2023
+        maxLength: 100
+        minLength: 2
+        type: string
+      price_per_day:
+        example: 45.99
+        minimum: 0
+        type: number
+      year:
+        example: 2023
+        maximum: 2030
+        minimum: 1900
+        type: integer
+    type: object
+  requests.CreateCarRequest:
+    description: Request payload for creating a new car
+    properties:
+      description:
+        description: |-
+          Description of the car
+          @Description Description of the car
+          @Example "This is a sample car description"
+        example: This is a sample car description
+        maxLength: 500
+        minLength: 10
+        type: string
+      name:
+        description: |-
+          Name of the car
+          @Description Name of the car
+          @Example "Sample Car"
+        example: Sample Car
+        maxLength: 100
+        minLength: 3
+        type: string
+    required:
+    - description
+    - name
+    type: object
+  requests.UpdateCarRequest:
+    description: Request payload for updating a car
+    properties:
+      description:
+        description: |-
+          Description of the car
+          @Description Description of the car
+          @Example "This is an updated car description"
+        example: This is an updated car description
+        maxLength: 500
+        minLength: 10
+        type: string
+      name:
+        description: |-
+          Name of the car
+          @Description Name of the car
+          @Example "Updated Car"
+        example: Updated Car
+        maxLength: 100
+        minLength: 3
+        type: string
+    type: object
+  utils.ErrorResponse:
+    description: Error response format
+    properties:
+      error:
+        example: Detailed error information
+        type: string
+      message:
+        example: Error message
+        type: string
+      success:
+        example: false
+        type: boolean
+    type: object
+  utils.PaginatedResponse:
+    description: Paginated response format
+    properties:
+      data: {}
+      limit:
+        example: 10
+        type: integer
+      message:
+        example: Data retrieved successfully
+        type: string
+      page:
+        example: 1
+        type: integer
+      success:
+        example: true
+        type: boolean
+      total:
+        example: 100
+        type: integer
+    type: object
+  utils.SuccessResponse:
+    description: Success response format
+    properties:
+      data: {}
+      message:
+        example: Operation completed successfully
+        type: string
+      success:
+        example: true
+        type: boolean
+    type: object
+host: localhost:8080
+info:
+  contact:
+    email: support@swagger.io
+    name: API Support
+    url: http://www.swagger.io/support
+  description: A RESTful API for car rental management system
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+  termsOfService: http://swagger.io/terms/
+  title: RentCar API
+  version: "1.0"
+paths:
+  /cars:
+    get:
+      consumes:
+      - application/json
+      description: Get a list of cars with optional pagination and filtering
+      parameters:
+      - default: 1
+        description: Page number
+        in: query
+        name: page
+        type: integer
+      - default: 10
+        description: Items per page
+        in: query
+        name: limit
+        type: integer
+      - description: Filter by availability
+        in: query
+        name: available
+        type: boolean
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/utils.SuccessResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/utils.ErrorResponse'
+      summary: Get all cars
+      tags:
+      - cars
+    post:
+      consumes:
+      - application/json
+      description: Create a new car with the provided information
+      parameters:
+      - description: Car creation request
+        in: body
+        name: car
+        required: true
+        schema:
+          $ref: '#/definitions/requests.CreateCarRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/utils.SuccessResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/utils.ErrorResponse'
+      summary: Create a new car
+      tags:
+      - cars
+  /cars/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a car by its ID
+      parameters:
+      - description: Car ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/utils.SuccessResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/utils.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/utils.ErrorResponse'
+      summary: Delete a car
+      tags:
+      - cars
+    get:
+      consumes:
+      - application/json
+      description: Get a single car by its ID
+      parameters:
+      - description: Car ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/utils.SuccessResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/utils.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/utils.ErrorResponse'
+      summary: Get a car by ID
+      tags:
+      - cars
+    put:
+      consumes:
+      - application/json
+      description: Update an existing car with the provided information
+      parameters:
+      - description: Car ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Car update request
+        in: body
+        name: car
+        required: true
+        schema:
+          $ref: '#/definitions/requests.UpdateCarRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/utils.SuccessResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/utils.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/utils.ErrorResponse'
+      summary: Update a car
+      tags:
+      - cars
+  /products:
+    get:
+      consumes:
+      - application/json
+      description: Get a list of products with optional pagination and filtering
+      parameters:
+      - default: 1
+        description: Page number
+        in: query
+        name: page
+        type: integer
+      - default: 10
+        description: Items per page
+        in: query
+        name: limit
+        type: integer
+      - description: Filter by availability
+        in: query
+        name: available
+        type: boolean
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/utils.PaginatedResponse'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/models.Product'
+                  type: array
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/utils.ErrorResponse'
+      summary: Get all products
+      tags:
+      - products
+    post:
+      consumes:
+      - application/json
+      description: Create a new product with the provided information
+      parameters:
+      - description: Product creation request
+        in: body
+        name: product
+        required: true
+        schema:
+          $ref: '#/definitions/models.CreateProductRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/utils.SuccessResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/utils.ErrorResponse'
+      summary: Create a new product
+      tags:
+      - products
+  /products/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a product by its ID
+      parameters:
+      - description: Product ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/utils.SuccessResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/utils.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/utils.ErrorResponse'
+      summary: Delete a product
+      tags:
+      - products
+    get:
+      consumes:
+      - application/json
+      description: Get a single product by its ID
+      parameters:
+      - description: Product ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/utils.SuccessResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/utils.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/utils.ErrorResponse'
+      summary: Get a product by ID
+      tags:
+      - products
+    put:
+      consumes:
+      - application/json
+      description: Update an existing product with the provided information
+      parameters:
+      - description: Product ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Product update request
+        in: body
+        name: product
+        required: true
+        schema:
+          $ref: '#/definitions/models.UpdateProductRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/utils.SuccessResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/models.Product'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/utils.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/utils.ErrorResponse'
+      summary: Update a product
+      tags:
+      - products
+schemes:
+- http
+- https
+swagger: "2.0"
